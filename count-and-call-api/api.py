@@ -4,15 +4,15 @@ import json
 import time
 import RPi.GPIO as GPIO
 
-compteur = {'api': 'http://localhost:8080/compteur',
+backend = {'api': 'http://localhost:8080/compteur',
          'delay': 60}
 headers = {'content-type': 'application/json'}
 
 def init(conf, debug):
     if conf['port'] == 80 :
-        compteur['api'] = 'http://' + conf['host'] + conf['base']
+        backend['api'] = 'http://' + conf['host'] + conf['base']
     else :
-        compteur['api'] = 'http://' + conf['host'] + ':' + str(conf['port']) + conf['base']
+        backend['api'] = 'http://' + conf['host'] + ':' + str(conf['port']) + conf['base']
 
 def get(url):
     r = requests.get(url, headers=headers)
@@ -72,7 +72,7 @@ def deleteJson(url, payload):
         return body
 
 def call(id):
-    query_url = compteur['api'] % "/" % id
+    query_url = backend['api'] + id
     print(query_url)
     try:
         body = putJson(query_url, "{}")
